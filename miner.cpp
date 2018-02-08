@@ -912,7 +912,7 @@ void send_i(void)
 				{
 					unsigned long long total = total_size / 1024 / 1024 / 1024;
 					for (auto It = satellite_size.begin(); It != satellite_size.end(); ++It) total = total + It->second;
-					bytes = sprintf_s(buffer, buffer_size, "POST /ATM?requestType=submitNonce&accountId=%llu&nonce=%llu&deadline=%llu HTTP/1.0\r\nHost: %s:%s\r\nX-Miner: Blago %s\r\nX-Capacity: %llu\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", iter->account_id, iter->nonce, iter->best, nodeaddr.c_str(), nodeport.c_str(), version, total);
+					bytes = sprintf_s(buffer, buffer_size, "POST /ATM?requestType=submitNonce&accountId=%llu&nonce=%llu&deadline=%llu HTTP/1.0\r\nHost: %s:%s\r\nX-Miner: Irontiga/Blago %s\r\nX-Capacity: %llu\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", iter->account_id, iter->nonce, iter->best, nodeaddr.c_str(), nodeport.c_str(), version, total);
 				}
 
 				// Sending to server
@@ -2784,7 +2784,7 @@ int main(int argc, char **argv) {
 	wprintw(win_main, "\nATMCash miner, %s", version, 0);
 	wattroff(win_main, COLOR_PAIR(12));
 	wattron(win_main, COLOR_PAIR(4));
-	wprintw(win_main, "\nProgramming: dcct (Linux) & Blago (Windows)\n", 0);
+	wprintw(win_main, "\nProgramming: dcct (Linux) & Blago (Windows)\n & irontiga (ATM port)", 0);
 	wattroff(win_main, COLOR_PAIR(4));
 
 
