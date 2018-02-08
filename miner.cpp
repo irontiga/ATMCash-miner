@@ -906,13 +906,13 @@ void send_i(void)
 				RtlSecureZeroMemory(buffer, buffer_size);
 				if (miner_mode == 0)
 				{
-					bytes = sprintf_s(buffer, buffer_size, "POST /burst?requestType=submitNonce&secretPhrase=%s&nonce=%llu HTTP/1.0\r\nConnection: close\r\n\r\n", pass, iter->nonce);
+					bytes = sprintf_s(buffer, buffer_size, "POST /ATM?requestType=submitNonce&secretPhrase=%s&nonce=%llu HTTP/1.0\r\nConnection: close\r\n\r\n", pass, iter->nonce);
 				}
 				if (miner_mode == 1)
 				{
 					unsigned long long total = total_size / 1024 / 1024 / 1024;
 					for (auto It = satellite_size.begin(); It != satellite_size.end(); ++It) total = total + It->second;
-					bytes = sprintf_s(buffer, buffer_size, "POST /burst?requestType=submitNonce&accountId=%llu&nonce=%llu&deadline=%llu HTTP/1.0\r\nHost: %s:%s\r\nX-Miner: Blago %s\r\nX-Capacity: %llu\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", iter->account_id, iter->nonce, iter->best, nodeaddr.c_str(), nodeport.c_str(), version, total);
+					bytes = sprintf_s(buffer, buffer_size, "POST /ATM?requestType=submitNonce&accountId=%llu&nonce=%llu&deadline=%llu HTTP/1.0\r\nHost: %s:%s\r\nX-Miner: Blago %s\r\nX-Capacity: %llu\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", iter->account_id, iter->nonce, iter->best, nodeaddr.c_str(), nodeport.c_str(), version, total);
 				}
 
 				// Sending to server
@@ -1784,7 +1784,7 @@ void GetBlockInfo(unsigned const num_block)
 
 	char* str_req = (char*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, MAX_PATH);
 	if (str_req == nullptr) ShowMemErrorExit();
-	sprintf_s(str_req, HeapSize(hHeap, 0, str_req), "POST /burst?requestType=getBlocks&firstIndex=%u&lastIndex=%u HTTP/1.0\r\nConnection: close\r\n\r\n", num_block, num_block + 1);
+	sprintf_s(str_req, HeapSize(hHeap, 0, str_req), "POST /ATM?requestType=getBlocks&firstIndex=%u&lastIndex=%u HTTP/1.0\r\nConnection: close\r\n\r\n", num_block, num_block + 1);
 	json = GetJSON(str_req);
 	//Log("\n getBlocks: ");
 
@@ -1821,7 +1821,7 @@ void GetBlockInfo(unsigned const num_block)
 			// Запрос данных аккаунта
 			str_req = (char*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, MAX_PATH);
 			if (str_req == nullptr) ShowMemErrorExit();
-			sprintf_s(str_req, HeapSize(hHeap, 0, str_req), "POST /burst?requestType=getAccount&account=%s HTTP/1.0\r\nConnection: close\r\n\r\n", generator);
+			sprintf_s(str_req, HeapSize(hHeap, 0, str_req), "POST /ATM?requestType=getAccount&account=%s HTTP/1.0\r\nConnection: close\r\n\r\n", generator);
 			json = GetJSON(str_req);
 			//Log("\n getAccount: ");
 
@@ -1846,7 +1846,7 @@ void GetBlockInfo(unsigned const num_block)
 			// Запрос RewardAssighnment по данному аккаунту
 			str_req = (char*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, MAX_PATH);
 			if (str_req == nullptr) ShowMemErrorExit();
-			sprintf_s(str_req, HeapSize(hHeap, 0, str_req), "POST /burst?requestType=getRewardRecipient&account=%s HTTP/1.0\r\nConnection: close\r\n\r\n", generator);
+			sprintf_s(str_req, HeapSize(hHeap, 0, str_req), "POST /ATM?requestType=getRewardRecipient&account=%s HTTP/1.0\r\nConnection: close\r\n\r\n", generator);
 			json = GetJSON(str_req);
 			HeapFree(hHeap, 0, str_req);
 			//Log("\n getRewardRecipient: ");
@@ -1877,7 +1877,7 @@ void GetBlockInfo(unsigned const num_block)
 					// Запрос данных аккаунта пула
 					str_req = (char*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, MAX_PATH);
 					if (str_req == nullptr) ShowMemErrorExit();
-					sprintf_s(str_req, HeapSize(hHeap, 0, str_req), "POST /burst?requestType=getAccount&account=%s HTTP/1.0\r\nConnection: close\r\n\r\n", rewardRecipient);
+					sprintf_s(str_req, HeapSize(hHeap, 0, str_req), "POST /ATM?requestType=getAccount&account=%s HTTP/1.0\r\nConnection: close\r\n\r\n", rewardRecipient);
 					json = GetJSON(str_req);
 					//Log("\n getAccount: ");
 
@@ -1971,7 +1971,7 @@ void pollLocal(void) {
 				Log("\n*! GMI: connect function failed with error: "); Log_u(WSAGetLastError());
 			}
 			else {
-				int bytes = sprintf_s(buffer, buffer_size, "POST /burst?requestType=getMiningInfo HTTP/1.0\r\nHost: %s:%s\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", nodeaddr.c_str(), nodeport.c_str());
+				int bytes = sprintf_s(buffer, buffer_size, "POST /ATM?requestType=getMiningInfo HTTP/1.0\r\nHost: %s:%s\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", nodeaddr.c_str(), nodeport.c_str());
 				iResult = send(UpdaterSocket, buffer, bytes, 0);
 				if (iResult == SOCKET_ERROR)
 				{
@@ -2066,7 +2066,7 @@ void pollLocal2(void) {
 	else {
 			setsockopt(UpdaterSocket, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT, NULL, 0);
 
-			int bytes = sprintf_s(buffer, buffer_size, "POST /burst?requestType=getMiningInfo HTTP/1.0\r\nHost: %s:%s\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", nodeaddr.c_str(), nodeport.c_str());
+			int bytes = sprintf_s(buffer, buffer_size, "POST /ATM?requestType=getMiningInfo HTTP/1.0\r\nHost: %s:%s\r\nContent-Length: 0\r\nConnection: close\r\n\r\n", nodeaddr.c_str(), nodeport.c_str());
 				iResult = send(UpdaterSocket, buffer, bytes, 0);
 				if (iResult == SOCKET_ERROR)
 				{
@@ -2781,7 +2781,7 @@ int main(int argc, char **argv) {
 	//	wrefresh(win_progress);
 
 	wattron(win_main, COLOR_PAIR(12));
-	wprintw(win_main, "\nBURST miner, %s", version, 0);
+	wprintw(win_main, "\nATMCash miner, %s", version, 0);
 	wattroff(win_main, COLOR_PAIR(12));
 	wattron(win_main, COLOR_PAIR(4));
 	wprintw(win_main, "\nProgramming: dcct (Linux) & Blago (Windows)\n", 0);

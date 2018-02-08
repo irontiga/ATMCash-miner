@@ -78,15 +78,15 @@ volatile int stopThreads = 0;
 char *pass = nullptr;							// пароль
 
 std::string nodeaddr = "localhost";	// адрес пула
-std::string nodeport = "8125";		// порт пула
+std::string nodeport = "8112";		// порт пула
 
 std::string updateraddr = "localhost";// адрес пула
-std::string updaterport = "8125";		// порт пула
+std::string updaterport = "8112";		// порт пула
 
 std::string infoaddr = "localhost";	// адрес пула
-std::string infoport = "8125";		// порт пула
+std::string infoport = "8112";		// порт пула
 
-std::string proxyport = "8125";		// порт пула
+std::string proxyport = "8112";		// порт пула
 
 char *p_minerPath = nullptr;		// путь к папке майнера
 size_t miner_mode = 0;				// режим майнера. 0=соло, 1=пул
